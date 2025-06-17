@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CxZ - Lab</title>
+    
+    <meta name="description" content="Laboratorium eksperimental oleh CxZ.">
+    
+    <!-- Menghubungkan ke file CSS yang SAMA dengan index.html -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    
+    <!-- Google Fonts (sama) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Memanggil pustaka ikon Lucide (sama) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+</head>
+<body id="page-tools">
+
+    <!-- Header & Navigasi -->
+    <header id="main-header">
+        <div class="container">
+            <!-- Tautan ini kembali ke index.html dan memiliki kelas transisi -->
+            <a href="index.html" class="logo page-transition-link">CxZ</a>
+            <div class="nav-wrapper">
+                <nav>
+                    <ul>
+                        <!-- Tautan-tautan ini juga memiliki kelas transisi -->
+                        <li><a href="index.html#hero" class="page-transition-link">Beranda</a></li>
+                        <li><a href="index.html#about" class="page-transition-link">Tentang</a></li>
+                        <li><a href="index.html#projects" class="page-transition-link">Proyek</a></li>
+                        <li><a href="tools.html">Lab</a></li> <!-- Tautan ini tidak perlu transisi karena sudah di halaman Lab -->
+                        <li><a href="index.html#contact" class="page-transition-link">Kontak</a></li>
+                    </ul>
+                </nav>
+                <button id="theme-toggle" title="Toggle light/dark mode">
+                    <i data-lucide="sun"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Konten Halaman Lab -->
+        <section id="lab-hero" class="hero-section">
+            <div class="container">
+                <h1 class="hero-title">Selamat Datang di Lab</h1>
+                <p class="hero-subtitle">Tempat saya bereksperimen dengan kode, keamanan, dan ide-ide interaktif.</p>
+            </div>
+        </section>
+
+        <section id="lab-tools" class="content-section bg-light">
+            <div class="container">
+                <h2 class="section-title">Alat & Eksperimen</h2>
+                <div class="project-grid">
+                    <div class="project-card">
+                        <div class="project-info">
+                            <h3 class="project-title">🔐 Encoder & Decoder</h3>
+                            <p class="project-description">Alat serbaguna untuk analisis payload (Base64, URL, Hex, dll). Segera hadir.</p>
+                            <a href="#" class="btn btn-secondary disabled">Mulai</a>
+                        </div>
+                    </div>
+                     <div class="project-card">
+                        <div class="project-info">
+                            <h3 class="project-title">👨‍💻 Simulator Terminal</h3>
+                            <p class="project-description">Rasakan pengalaman terminal Linux sederhana langsung di browser. Segera hadir.</p>
+                            <a href="#" class="btn btn-secondary disabled">Mulai</a>
+                        </div>
+                    </div>
+                     <div class="project-card">
+                        <div class="project-info">
+                            <h3 class="project-title">📊 Penganalisis Log</h3>
+                            <p class="project-description">Visualisasikan file log untuk menemukan anomali dan pola akses. Segera hadir.</p>
+                             <a href="#" class="btn btn-secondary disabled">Mulai</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 <a href="index.html" class="logo-footer page-transition-link">CxZ</a>, Powered By kopi.</p>
+        </div>
+    </footer>
+
+    <!-- Elemen HTML untuk transisi (wajib ada) -->
+    <div id="page-transitioner">
+        <div id="transition-bubble"></div>
+    </div>
+
+    <!-- Menghubungkan ke file JavaScript eksternal -->
+    <!-- PERHATIKAN: Anda bisa membuat file baru 'tools.js' atau menggunakan 'script.js' yang sama. -->
+    <!-- Untuk menjaga kerapian, kita akan gunakan 'script.js' yang sudah ada. -->
+    <script src="assets/js/script.js"></script>
+
+</body>
+</html>

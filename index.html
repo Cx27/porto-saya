@@ -6,23 +6,17 @@
     <title>CxZ - Portofolio</title>
     
     <meta name="description" content="Portofolio pribadi CxZ, seorang Mahasiswa Informatika yang bersemangat.">
-    
-    <!-- Menghubungkan ke file CSS eksternal -->
     <link rel="stylesheet" href="assets/css/style.css">
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
-    <!-- Memanggil pustaka ikon Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👨‍💻</text></svg>">
 </head>
-<body>
+<body id="page-index">
 
-    <!-- Header & Navigasi -->
     <header id="main-header">
         <div class="container">
             <a href="#" class="logo">CxZ</a>
@@ -32,6 +26,7 @@
                         <li><a href="#hero">Beranda</a></li>
                         <li><a href="#about">Tentang</a></li>
                         <li><a href="#projects">Proyek</a></li>
+                        <li><a href="tools.html">Lab</a></li>
                         <li><a href="#contact">Kontak</a></li>
                     </ul>
                 </nav>
@@ -43,7 +38,6 @@
     </header>
 
     <main>
-        <!-- Hero Section -->
         <section id="hero" class="hero-section">
             <div class="container">
                 <h1 class="hero-title">Halo, saya <span class="highlight" id="typed-text-container"><span id="typed-text"></span></span></h1>
@@ -52,7 +46,6 @@
             </div>
         </section>
 
-        <!-- Tentang Saya -->
         <section id="about" class="content-section">
             <div class="container">
                 <h2 class="section-title">Tentang Saya</h2>
@@ -63,7 +56,7 @@
                             Selamat datang di sudut digital saya! Saya memiliki pengalaman di bidang pengembangan web, desain UI/UX, dll. Saya sangat menikmati proses mengubah ide kompleks menjadi antarmuka yang ramah pengguna.
                         </p>
                         <p>
-                            Beberapa teknologi yang saya kuasai antara lain:
+                            Beberapa teknologi yang saya pelajari antara lain:
                         </p>
                         <ul class="skills-list">
                             <li>HTML5 & CSS3</li>
@@ -78,7 +71,6 @@
             </div>
         </section>
 
-        <!-- Proyek Unggulan -->
         <section id="projects" class="content-section bg-light">
             <div class="container">
                 <h2 class="section-title">Proyek Unggulan</h2>
@@ -103,7 +95,6 @@
             </div>
         </section>
 
-        <!-- Kontak Section dengan Pilihan Ikon -->
         <section id="contact" class="content-section">
             <div class="container text-center">
                 <h2 class="section-title">Mari Terhubung</h2>
@@ -122,7 +113,6 @@
                         <i data-lucide="instagram"></i>
                         <span>Instagram</span>
                     </a>
-                    <!-- Ganti nomor dengan nomor Anda diawali 62 -->
                     <a href="https://wa.me/628818126436" target="_blank" class="contact-choice" title="WhatsApp">
                         <i data-lucide="smartphone"></i>
                         <span>WhatsApp</span>
@@ -136,14 +126,12 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer>
         <div class="container">
             <p>&copy; 2024 <a href="#" class="logo-footer">CxZ</a>, Powered By kopi.</p>
         </div>
     </footer>
 
-    <!-- Modal untuk Formulir Email (Awalnya Tersembunyi) -->
     <div id="email-modal" class="modal-container">
         <div class="modal-content">
             <button id="close-modal" class="modal-close-btn">&times;</button>
@@ -166,7 +154,10 @@
         </div>
     </div>
 
-    <!-- Menghubungkan ke file JavaScript eksternal -->
+    <div id="page-transitioner">
+        <div id="transition-bubble"></div>
+    </div>
+
     <script src="assets/js/script.js"></script>
 </body>
 </html>
