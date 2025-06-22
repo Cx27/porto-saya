@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    // ===============================================
-    // === BAGIAN YANG TIDAK BERUBAH (FUNGSI ASLI) ===
-    // ===============================================
+    // ====================================================
+    // === BAGIAN INI TIDAK DISENTUH SAMA SEKALI ===
+    // ====================================================
     
     const header = document.getElementById('main-header');
     lucide.createIcons();
@@ -41,9 +41,9 @@ document.addEventListener('DOMContentLoaded', function() {
         navLinks.forEach(link => {
             link.classList.remove('active');
             if (link.hash && link.pathname === window.location.pathname) {
-                 if (link.getAttribute('href') === `#${currentSectionId}`) {
-                    link.classList.add('active');
-                }
+                    if (link.getAttribute('href') === `#${currentSectionId}`) {
+                        link.classList.add('active');
+                    }
             }
         });
     }
@@ -100,27 +100,13 @@ document.addEventListener('DOMContentLoaded', function() {
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modalContainer.classList.contains('visible')) { modalContainer.classList.remove('visible'); } });
     }
 
-    // ==========================================================
-    // === AWAL PERUBAHAN: FUNGSI TEMA DAN TRANSISI INDEPENDEN ===
-    // ==========================================================
-
-    /**
-     * Mengelola tema (terang/gelap) secara independen untuk setiap halaman.
-     * Menggunakan ID dari <body> untuk membuat kunci localStorage yang unik.
-     * Contoh: Halaman <body id="page-index"> akan menggunakan kunci 'theme-index'.
-     */
     function themeToggle() {
         const themeToggleButton = document.getElementById('theme-toggle');
-        if (!themeToggleButton || !document.body.id) return; // Keluar jika tombol atau body ID tidak ada
-
-        // 1. Tentukan kunci penyimpanan berdasarkan ID halaman saat ini
-        const pageId = document.body.id.replace('page-', ''); // 'index' atau 'tools'
+        if (!themeToggleButton || !document.body.id) return;
+        const pageId = document.body.id.replace('page-', '');
         const storageKey = `theme-${pageId}`;
-
         const sunIcon = `<i data-lucide="sun"></i>`;
         const moonIcon = `<i data-lucide="moon"></i>`;
-        
-        // 2. Terapkan tema yang tersimpan saat halaman dimuat
         if (localStorage.getItem(storageKey) === 'light') {
             document.body.classList.add('light-mode');
             themeToggleButton.innerHTML = moonIcon;
@@ -128,13 +114,9 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.classList.remove('light-mode');
             themeToggleButton.innerHTML = sunIcon;
         }
-        lucide.createIcons(); // Perbarui ikon setelah mengubah HTML
-        
-        // 3. Tambahkan event listener untuk tombol
+        lucide.createIcons();
         themeToggleButton.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
-            
-            // 4. Simpan status baru ke kunci localStorage yang benar
             if (document.body.classList.contains('light-mode')) {
                 themeToggleButton.innerHTML = moonIcon;
                 localStorage.setItem(storageKey, 'light');
@@ -146,56 +128,34 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    /**
-     * Mengelola transisi halaman dengan warna gelembung yang cerdas.
-     * Warna gelembung ditentukan oleh tema halaman TUJUAN.
-     */
     function pageTransition() {
-        // Pilih semua tautan yang menuju ke halaman .html lain di situs yang sama
         const transitionLinks = document.querySelectorAll('a[href*=".html"]');
         const transitioner = document.getElementById('page-transitioner');
         const bubble = document.getElementById('transition-bubble');
-
         if (!transitioner || !bubble) return;
-
         transitionLinks.forEach(link => {
-            // Pastikan tautan adalah internal (domain yang sama) dan bukan tautan ke halaman saat ini
             if (link.hostname === window.location.hostname && link.pathname !== window.location.pathname) {
-                
                 link.addEventListener('click', function(event) {
                     event.preventDefault(); 
                     const targetUrl = this.href;
-
-                    // 1. Tentukan halaman tujuan dari URL tautan
                     const destinationPage = targetUrl.includes('tools.html') ? 'tools' : 'index';
                     const destinationStorageKey = `theme-${destinationPage}`;
-                    
-                    // 2. Ambil tema halaman tujuan dari localStorage (default ke 'dark')
                     const destinationTheme = localStorage.getItem(destinationStorageKey) || 'dark';
-                    
-                    // 3. Tentukan warna gelembung berdasarkan tema tujuan
-                    const lightColor = '#f4f4f9'; // Warna dari --bg-color di body.light-mode
-                    const darkColor = '#121212';  // Warna dari --bg-color di :root
+                    const lightColor = '#f4f4f9';
+                    const darkColor = '#121212';
                     const bubbleColor = destinationTheme === 'light' ? lightColor : darkColor;
-                    
-                    // 4. Terapkan warna dan mulai animasi
                     bubble.style.backgroundColor = bubbleColor;
                     transitioner.classList.add('is-active');
                     bubble.style.left = `${event.clientX}px`;
                     bubble.style.top = `${event.clientY}px`;
                     bubble.classList.add('is-expanding');
-                    
-                    // 5. Arahkan ke halaman baru setelah animasi berjalan
                     setTimeout(() => {
                         window.location.href = targetUrl;
-                    }, 700); // Durasi harus cocok dengan transisi di CSS
+                    }, 700);
                 });
             }
         });
-
-        // Tangani saat pengguna menekan tombol "Back/Forward" di browser
         window.addEventListener('pageshow', function(event) {
-            // Sembunyikan layer transisi jika halaman dimuat dari cache (setelah menekan 'back')
             if (event.persisted) {
                 transitioner.classList.remove('is-active');
                 bubble.classList.remove('is-expanding');
@@ -203,21 +163,175 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    function initEncoderDecoderTool() {
+        const modal = document.getElementById('encoder-decoder-modal');
+        const openBtn = document.getElementById('open-encoder-decoder');
+        const closeBtn = document.getElementById('close-encoder-decoder');
+        
+        if (!modal || !openBtn || !closeBtn) return;
+
+        const input = document.getElementById('encoder-input');
+        const output = document.getElementById('encoder-output');
+        const typeSelect = document.getElementById('encoder-type');
+        const swapBtn = document.getElementById('swap-io');
+        const copyBtn = modal.querySelector('.btn-copy');
+
+        async function process() {
+            const operation = typeSelect.value;
+            const text = input.value;
+            if (!text) {
+                output.value = '';
+                return;
+            }
+            let result = '';
+
+            try {
+                switch (operation) {
+                    case 'encode-base64': result = btoa(unescape(encodeURIComponent(text))); break;
+                    case 'decode-base64': result = decodeURIComponent(escape(atob(text))); break;
+                    case 'encode-url': result = encodeURIComponent(text); break;
+                    case 'decode-url': result = decodeURIComponent(text); break;
+                    case 'hash-sha256':
+                        const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+                        const hashArray = Array.from(new Uint8Array(hashBuffer));
+                        result = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                        break;
+                    case 'case-upper': result = text.toUpperCase(); break;
+                    case 'case-lower': result = text.toLowerCase(); break;
+                    default: result = 'Operasi tidak valid';
+                }
+            } catch (e) { result = `Error: ${e.message}`; }
+            output.value = result;
+        }
+
+        openBtn.addEventListener('click', (e) => { e.preventDefault(); modal.classList.add('visible'); });
+        closeBtn.addEventListener('click', () => modal.classList.remove('visible'));
+        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('visible'); });
+        input.addEventListener('input', process);
+        typeSelect.addEventListener('change', process);
+        swapBtn.addEventListener('click', () => {
+            if (output.value.startsWith('Error:')) return;
+            [input.value, output.value] = [output.value, input.value];
+            process();
+        });
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(output.value).then(() => {
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = 'Disalin!';
+                setTimeout(() => { copyBtn.textContent = originalText; }, 2000);
+            });
+        });
+    }
+
+    async function initTerminal() {
+        const { terminalCommands } = await import('./terminal-commands.js');
+        const container = document.getElementById('terminal-container');
+        const openBtn = document.getElementById('open-terminal');
+        const closeBtn = document.getElementById('close-terminal');
+        const output = document.getElementById('terminal-output');
+        const input = document.getElementById('terminal-input');
+        // 'terminalBody' tidak lagi digunakan untuk scrolling, tapi tetap sebagai referensi jika perlu
+        const terminalBody = document.getElementById('terminal-body'); 
+        
+        if (!container || !openBtn || !closeBtn) return;
+        
+        let commandHistory = [];
+        let historyIndex = -1;
+        let isExecuting = false;
+
+        const welcomeMessage = `CxZ Virtual Terminal v2.0\n(c) 2025 CxZ Corporation.\nKetik "help" untuk memulai.`;
+
+        openBtn.addEventListener('click', (e) => { 
+            e.preventDefault(); 
+            container.classList.add('visible'); 
+            if (output.innerHTML === '') {
+                output.innerHTML = `<div>${welcomeMessage.replace(/\n/g, '<br>')}</div>`;
+            }
+            input.focus();
+        });
+        closeBtn.addEventListener('click', () => container.classList.remove('visible'));
+        
+        input.addEventListener('keydown', async (e) => {
+            if (isExecuting) return;
+
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (historyIndex < commandHistory.length - 1) {
+                    historyIndex++;
+                    input.value = commandHistory[historyIndex];
+                }
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    input.value = commandHistory[historyIndex];
+                } else {
+                    historyIndex = -1;
+                    input.value = '';
+                }
+            }
+            
+            if (e.key === 'Enter' && input.value.trim() !== '') {
+                isExecuting = true;
+                const commandLine = input.value.trim();
+                
+                if (commandHistory[0] !== commandLine) {
+                    commandHistory.unshift(commandLine);
+                }
+                historyIndex = -1;
+                input.value = '';
+
+                if (commandLine.toLowerCase() === 'clear') {
+                    output.innerHTML = '';
+                    isExecuting = false;
+                    return; 
+                }
+                
+                const [command, ...args] = commandLine.split(' ');
+                const promptHtml = `<div><span class="prompt">guest@cxz.me:~$</span> <span>${commandLine}</span></div>`;
+                output.insertAdjacentHTML('beforeend', promptHtml);
+                
+                const cmdFunction = terminalCommands[command.toLowerCase()];
+                if (cmdFunction) {
+                    try {
+                        const result = await cmdFunction.call(terminalCommands, args, commandHistory);
+                        if (result) {
+                           output.insertAdjacentHTML('beforeend', `<div>${result}</div>`);
+                        }
+                    } catch (err) {
+                        output.insertAdjacentHTML('beforeend', `<div class="error">Script error: ${err.message}</div>`);
+                    }
+                } else {
+                    output.insertAdjacentHTML('beforeend', `<div class="error">command not found: ${command}</div>`);
+                }
+                
+                // === PERBAIKAN FINAL AUTO-SCROLL ===
+                // Scroll elemen #terminal-output, bukan #terminal-body
+                output.scrollTop = output.scrollHeight; 
+                
+                isExecuting = false;
+            }
+        });
+    }
+    
     // ==========================================
-    // === MEMANGGIL SEMUA FUNGSI TERMASUK YANG BARU ===
+    // === MEMANGGIL SEMUA FUNGSI (BAGIAN UTAMA) ===
     // ==========================================
     
     handleScroll();
     updateActiveLink();
-    typingEffect();
-    handleContactForm();
-    handleContactModal();
-    
-    // Panggil fungsi tema dan transisi yang baru
     themeToggle();
     pageTransition();
+    
+    if (document.body.id === 'page-index') {
+        typingEffect();
+        handleContactForm();
+        handleContactModal();
+    } else if (document.body.id === 'page-tools') {
+        initEncoderDecoderTool();
+        initTerminal();
+    }
 
-    // Tambahkan listener untuk scroll
     window.addEventListener('scroll', () => {
         handleScroll();
         updateActiveLink();
