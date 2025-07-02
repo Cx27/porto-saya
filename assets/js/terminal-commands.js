@@ -1,15 +1,10 @@
-// === terminal-commands.js ===
-
-// DITAMBAHKAN: getPrivateIP diimpor dari api-utils.js
 import { getDeviceInfo, getIPInfo, whoisLookup, getPrivateIP } from './api-utils.js';
 
 const pageLoadTime = new Date();
 
-// Helper function untuk format output help
 function formatHelp(commands) {
     let helpText = 'Perintah yang tersedia:<br><br><table class="help-table">';
     
-    // Daftar perintah diperbarui untuk merefleksikan perubahan ifconfig
     const commandList = ['help', 'clear', 'date', 'whoami', 'echo', 'uname', 'neofetch', 'ip', 'ifconfig', 'whois', 'ping', 'hostname', 'history'];
 
     commandList.forEach(cmd => {
@@ -23,7 +18,6 @@ function formatHelp(commands) {
             case 'uname': description = 'Menampilkan info sistem. Penggunaan: uname -a'; break;
             case 'neofetch': description = 'Menampilkan info OS & Browser dengan gaya.'; break;
             case 'ip': description = 'Menampilkan informasi IP publik Anda.'; break;
-            // DESKRIPSI IFCONFIG DIPERBARUI
             case 'ifconfig': description = 'Menampilkan info IP. Penggunaan: ifconfig [-a] untuk info lengkap.'; break;
             case 'ping': description = 'Mengukur latensi ke host. Penggunaan: ping [domain]'; break;
             case 'whois': description = 'Mencari info registrasi domain. Penggunaan: whois [domain]'; break;
@@ -168,10 +162,8 @@ export const terminalCommands = {
         ].join('<br>');
     },
 
-    // --- FUNGSI IFCONFIG YANG DI-UPGRADE ---
     async ifconfig(args) {
         if (args[0] === '-a') {
-            // Jalankan kedua promise secara bersamaan untuk efisiensi
             const [publicInfo, privateInfo] = await Promise.allSettled([
                 getIPInfo(),
                 getPrivateIP()
@@ -193,7 +185,6 @@ export const terminalCommands = {
             return output;
 
         } else {
-            // Jika tanpa argumen, panggil perintah 'ip'
             return this.ip();
         }
     },

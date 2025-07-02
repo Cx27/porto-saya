@@ -1,9 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    // ====================================================
-    // === BAGIAN INI TIDAK DISENTUH SAMA SEKALI ===
-    // ====================================================
-    
     const header = document.getElementById('main-header');
     lucide.createIcons();
 
@@ -223,6 +219,50 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    function initNetworkInfoTool() {
+        const modal = document.getElementById('network-info-modal');
+        const openBtn = document.getElementById('open-network-info');
+        const closeBtn = document.getElementById('close-network-info');
+        const output = document.getElementById('network-info-output');
+
+        if (!modal || !openBtn || !closeBtn || !output) return;
+
+        const openModal = async () => {
+            modal.classList.add('visible');
+            output.innerHTML = '<p>Memuat data jaringan...</p>';
+
+            const [ipInfoResult, privateIpResult] = await Promise.allSettled([
+                getIPInfo(),
+                getPrivateIP()
+            ]);
+
+            let html = '<div class="network-info-display"><dl>';
+
+            if (privateIpResult.status === 'fulfilled') {
+                html += `<dt>IP Privat</dt><dd>${privateIpResult.value}</dd>`;
+            } else {
+                html += `<dt>IP Privat</dt><dd class="error">Tidak dapat diakses</dd>`;
+            }
+
+            if (ipInfoResult.status === 'fulfilled' && !ipInfoResult.value.error) {
+                const data = ipInfoResult.value;
+                html += `<dt>IP Publik</dt><dd>${data.ip || 'N/A'}</dd>`;
+                html += `<dt>Lokasi</dt><dd>${data.city || 'N/A'}, ${data.country || 'N/A'}</dd>`;
+                html += `<dt>ISP</dt><dd>${data.org || 'N/A'}</dd>`;
+            } else {
+                 html += `<dt>IP Publik</dt><dd class="error">Gagal memuat</dd>`;
+            }
+            
+            html += '</dl></div>';
+            output.innerHTML = html;
+            lucide.createIcons();
+        };
+
+        openBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
+        closeBtn.addEventListener('click', () => modal.classList.remove('visible'));
+        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('visible'); });
+    }
+
     async function initTerminal() {
         const { terminalCommands } = await import('./terminal-commands.js');
         const container = document.getElementById('terminal-container');
@@ -230,8 +270,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const closeBtn = document.getElementById('close-terminal');
         const output = document.getElementById('terminal-output');
         const input = document.getElementById('terminal-input');
-        // 'terminalBody' tidak lagi digunakan untuk scrolling, tapi tetap sebagai referensi jika perlu
-        const terminalBody = document.getElementById('terminal-body'); 
+        const terminalBody = document.getElementById('terminal-body');
         
         if (!container || !openBtn || !closeBtn) return;
         
@@ -305,18 +344,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     output.insertAdjacentHTML('beforeend', `<div class="error">command not found: ${command}</div>`);
                 }
                 
-                // === PERBAIKAN FINAL AUTO-SCROLL ===
-                // Scroll elemen #terminal-output, bukan #terminal-body
-                output.scrollTop = output.scrollHeight; 
+                output.scrollTop = output.scrollHeight;
                 
                 isExecuting = false;
             }
         });
     }
-    
-    // ==========================================
-    // === MEMANGGIL SEMUA FUNGSI (BAGIAN UTAMA) ===
-    // ==========================================
     
     handleScroll();
     updateActiveLink();
@@ -330,6 +363,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } else if (document.body.id === 'page-tools') {
         initEncoderDecoderTool();
         initTerminal();
+        initNetworkInfoTool();
     }
 
     window.addEventListener('scroll', () => {

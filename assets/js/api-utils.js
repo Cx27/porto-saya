@@ -31,9 +31,13 @@ function detectOS() {
  * Ambil IP publik dan lokasi
  */
 export async function getIPInfo() {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 detik timeout
+
     try {
-        const res = await fetch("https://ipapi.co/json/");
-        if (!res.ok) throw new Error("Failed to fetch IP info");
+        const res = await fetch("https://ipapi.co/json/", { signal: controller.signal });
+        clearTimeout(timeoutId);
+        if (!res.ok) throw new Error("Gagal mengambil info IP");
         const data = await res.json();
         return {
             ip: data.ip,
@@ -45,6 +49,10 @@ export async function getIPInfo() {
             longitude: data.longitude
         };
     } catch (e) {
+        clearTimeout(timeoutId);
+        if (e.name === 'AbortError') {
+            return { error: "Permintaan ke API memakan waktu terlalu lama (timeout)." };
+        }
         return { error: e.message };
     }
 }
@@ -53,20 +61,24 @@ export async function getIPInfo() {
  * Dummy Whois lookup dengan API publik
  */
 export async function whoisLookup(query) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 detik timeout
+
     try {
-        const res = await fetch(`https://ipapi.co/${query}/json/`);
+        const res = await fetch(`https://ipapi.co/${query}/json/`, { signal: controller.signal });
+        clearTimeout(timeoutId);
         if (!res.ok) throw new Error("Gagal fetch WHOIS");
         const data = await res.json();
         return data;
     } catch (e) {
+        clearTimeout(timeoutId);
+        if (e.name === 'AbortError') {
+            return { error: "Permintaan ke API memakan waktu terlalu lama (timeout)." };
+        }
         return { error: e.message };
     }
 }
 
-
-// =================================================================
-// === FUNGSI BARU YANG DITAMBAHKAN UNTUK MENDAPATKAN IP PRIVAT ===
-// =================================================================
 
 /**
  * Mencoba mengambil IP Privat pengguna menggunakan trik WebRTC.
@@ -75,45 +87,38 @@ export async function whoisLookup(query) {
 export function getPrivateIP() {
     return new Promise((resolve, reject) => {
         try {
-            // Membuat koneksi WebRTC palsu
             const pc = new RTCPeerConnection({ iceServers: [] });
             
-            // Membuat data channel dummy untuk memicu proses
             pc.createDataChannel('');
             pc.createOffer().then(offer => pc.setLocalDescription(offer));
 
-            // Mendengarkan event 'onicecandidate' yang akan membocorkan IP
             pc.onicecandidate = (e) => {
                 if (!e || !e.candidate || !e.candidate.candidate) {
                     return;
                 }
 
-                // Menggunakan Regex untuk menemukan semua alamat IP di dalam string kandidat
                 const ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g;
                 const foundIPs = e.candidate.candidate.match(ipRegex);
 
                 if (foundIPs) {
-                    // Cari IP pertama yang cocok dengan rentang alamat IP Privat
                     const privateIP = foundIPs.find(ip => 
                         ip.startsWith('192.168.') || 
                         ip.startsWith('10.') || 
-                        /^172\.(1[6-9]|2[0-9]|3[0-1])\./.test(ip) // Regex untuk 172.16.0.0 - 172.31.255.255
+                        /^172\.(1[6-9]|2[0-9]|3[0-1])\./.test(ip)
                     );
 
                     if (privateIP) {
-                        pc.onicecandidate = null; // Hentikan pencarian setelah ditemukan
-                        resolve(privateIP);      // Kirim hasilnya
+                        pc.onicecandidate = null;
+                        resolve(privateIP);
                     }
                 }
             };
-            
-            // Timeout jika tidak berhasil menemukan dalam 2 detik
             setTimeout(() => {
                 reject(new Error('Timeout atau diblokir oleh browser/ekstensi.'));
             }, 2000);
 
         } catch (error) {
-            reject(error); // Tangani error jika WebRTC tidak didukung
+            reject(error);
         }
     });
 }

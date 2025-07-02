@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CxZ - Lab</title>
     
-    <meta name="description" content="Laboratorium eksperimental oleh CxZ.">
+    <meta name="description" content="Laboratorium oleh CxZ.">
     
     <link rel="stylesheet" href="assets/css/style.css">
     
@@ -22,35 +22,36 @@
     <header id="main-header">
         <div class="container">
             <a href="index.html" class="logo page-transition-link">CxZ</a>
-            <div class="nav-wrapper">
-                <nav>
-                    <ul>
-                        <li><a href="index.html#hero" class="page-transition-link">Beranda</a></li>
-                        <li><a href="index.html#about" class="page-transition-link">Tentang</a></li>
-                        <li><a href="index.html#projects" class="page-transition-link">Proyek</a></li>
-                        <li><a href="tools.html">Lab</a></li> <li><a href="index.html#contact" class="page-transition-link">Kontak</a></li>
-                    </ul>
-                </nav>
-                <button id="theme-toggle" title="Toggle light/dark mode">
-                    <i data-lucide="sun"></i>
-                </button>
-            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html#hero" class="page-transition-link">Beranda</a></li>
+                    <li><a href="index.html#about" class="page-transition-link">Tentang</a></li>
+                    <li><a href="index.html#projects" class="page-transition-link">Proyek</a></li>
+                    <li><a href="tools.html">Lab</a></li> <li><a href="index.html#contact" class="page-transition-link">Kontak</a></li>
+                </ul>
+            </nav>
+            <button id="theme-toggle" title="Toggle light/dark mode">
+                <i data-lucide="sun"></i>
+            </button>
         </div>
     </header>
 
     <main>
         <section id="lab-hero" class="hero-section">
             <div class="container">
-                <h1 class="hero-title">𝖂𝖊𝖑𝖈𝖔𝖒𝖊 𝖙𝖔 𝖙𝖍𝖊 𝖑𝖆𝖇 𝖛𝖗𝖔</h1>
+                <h1 class="hero-title">𝖂𝖊𝖑𝖈𝖔𝖒𝖊 𝖙𝖔 𝖙𝖍𝖊 𝖑𝖆𝖇 𝖍𝖔𝖒𝖒𝖎𝖊</h1>
                 <p class="hero-subtitle">𝑇𝑒𝑚𝑝𝑎𝑡 𝑠𝑎𝑦𝑎 𝑏𝑒𝑟𝑒𝑘𝑠𝑝𝑒𝑟𝑖𝑚𝑒𝑛 𝑑𝑒𝑛𝑔𝑎𝑛 𝑘𝑜𝑑𝑒, 𝑘𝑒𝑎𝑚𝑎𝑛𝑎𝑛, 𝑑𝑎𝑛 𝑖𝑑𝑒-𝑖𝑑𝑒 𝑖𝑛𝑡𝑒𝑟𝑎𝑘𝑡𝑖𝑓.</p>
             </div>
         </section>
 
-        <section id="lab-tools" class="content-section bg-light">
+        <section id="lab-tools" class="content-section bg-light lab-background">
             <div class="container">
                 <h2 class="section-title">Alat & Eksperimen</h2>
                 <div class="project-grid">
                     <div class="project-card">
+                        <div class="project-card-icon">
+                            <i data-lucide="lock-keyhole"></i>
+                        </div>
                         <div class="project-info">
                             <h3 class="project-title">🔐 Encoder & Decoder</h3>
                             <p class="project-description">Alat serbaguna untuk analisis payload (Base64, URL, Hex, dll).</p>
@@ -58,16 +59,33 @@
                         </div>
                     </div>
                      <div class="project-card">
+                        <div class="project-card-icon">
+                            <i data-lucide="terminal-square"></i>
+                        </div>
                         <div class="project-info">
                             <h3 class="project-title">👨‍💻 Simulator Terminal</h3>
                             <p class="project-description">Rasakan pengalaman terminal Linux sederhana langsung di browser.</p>
                              <a href="#" id="open-terminal" class="btn btn-secondary">Mulai</a>
                         </div>
                     </div>
-                     <div class="project-card">
+                    <div class="project-card">
+                        <div class="project-card-icon">
+                            <i data-lucide="wifi"></i>
+                        </div>
                         <div class="project-info">
+                            <h3 class="project-title">📡 Info Jaringan</h3>
+                            <p class="project-description">Lihat informasi IP publik, privat, dan lokasi geografis Anda.</p>
+                            <a href="#" id="open-network-info" class="btn btn-secondary">Mulai</a>
+                        </div>
+                    </div>
+                     <div class="project-card">
+                        <div class="project-card-icon">
+                            <i data-lucide="area-chart"></i>
+                        </div>
+                        <div class="project-info">
+                            <span class="coming-soon-badge">Segera Hadir</span>
                             <h3 class="project-title">📊 Penganalisis Log</h3>
-                            <p class="project-description">Visualisasikan file log untuk menemukan anomali dan pola akses, Coming Soon dawgg.</p>
+                            <p class="project-description">Visualisasikan file log untuk menemukan anomali dan pola akses.</p>
                              <a href="#" class="btn btn-secondary disabled">Mulai</a>
                         </div>
                     </div>
@@ -78,7 +96,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2025 <a href="index.html" class="logo-footer page-transition-link">CxZ</a> Powered By kopi.</p>
+            <p>&copy; 2025 <a href="#" class="logo-footer">CxZ</a> Powered By kopi.</p>
         </div>
     </footer>
 
@@ -136,11 +154,22 @@
         </div>
     </div>
 
+    <div id="network-info-modal" class="modal-container">
+        <div class="modal-content tool-modal">
+            <button id="close-network-info" class="modal-close-btn">&times;</button>
+            <h3>Informasi Jaringan Anda</h3>
+            <p class="modal-subtitle">Data diambil secara real-time dari browser dan API publik.</p>
+            <div id="network-info-output">
+                <p>Memuat data...</p>
+            </div>
+        </div>
+    </div>
+
     <div id="page-transitioner">
         <div id="transition-bubble"></div>
     </div>
 
-    <script type="module" src="assets/js/script.js"></script>
+    <script src="assets/js/script.js"></script>
 
 </body>
 </html>
